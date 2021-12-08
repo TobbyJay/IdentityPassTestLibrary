@@ -3,6 +3,7 @@ using IdentityPassTestLibrary.V1.API.Implementations;
 using IdentityPassTestLibrary.V1.API.Interfaces;
 using IdentityPassTestLibrary.V1.Responses;
 using IdentityPassTestLibrary.V1.Responses.Bvn;
+using IdentityPassTestLibrary.V1.Responses.Bvn.Bvn1._0;
 using System.Threading.Tasks;
 using Xunit;
 
