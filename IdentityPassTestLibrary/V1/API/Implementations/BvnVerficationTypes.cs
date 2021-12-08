@@ -20,10 +20,9 @@ namespace IdentityPassTestLibrary.V1.API.Implementations
         /// <param name="secretKey"></param>
         /// <param name="environmentType"></param>
         /// <returns> The verification status and details</returns>
-        public async Task<Response> VerfifyBvnInfoLevel1(string number, string secretKey, bool environmentType)
+        public async Task<VerificationLevelOne> VerfifyBvnInfoLevel1(string number, string secretKey, bool environmentType)
         {
-            var verificationResponse = new Response();
-
+           
             var environmentUrl = "";
 
             if (environmentType == false) environmentUrl = "https://sandbox.myidentitypass.com";
@@ -47,25 +46,10 @@ namespace IdentityPassTestLibrary.V1.API.Implementations
 
             string result = await response.Content.ReadAsStringAsync();
 
-            var root = JsonSerializer.Deserialize<VerificationLevelOne>(result, _options);
+            var verificationDetails = JsonSerializer.Deserialize<VerificationLevelOne>(result, _options);
 
-            if (root?.Status == true)
-            {
-                var data = new Data
-                {
-                    VerificationType = "bvn"
-                };
-
-                verificationResponse = new Response
-                {
-                    Status = root.Status,
-                    Message = root.Detail?.ToLower(),
-                    Data = data,
-                };
-
-            }
-
-            return verificationResponse;
+          
+            return verificationDetails;
 
         }
 

@@ -2,6 +2,7 @@
 using IdentityPassTestLibrary.V1.API.Implementations;
 using IdentityPassTestLibrary.V1.API.Interfaces;
 using IdentityPassTestLibrary.V1.Responses;
+using IdentityPassTestLibrary.V1.Responses.Bvn;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -24,27 +25,30 @@ namespace Tests
             var verify = _bvnVerficationTypes.VerfifyBvnInfoLevel1(number, secretKey, environmentType).Result;
 
 
+            var bvnData = new BvnData
+            {
+                DateOfBirth = "1999-12-21",
+                FirstName = "TEST",
+                LastName = "test",
+                MiddleName = "test",
+                PhoneNumber = "09082838483"
+            };
+
             // Act
-            var data = new Data
+            var expected = new VerificationLevelOne
             {
-                VerificationType = "bvn"
-            };
-
-            var expected = new Response
-            {
+                Detail = "Verification Successful",
+                ResponseCode = "00",
                 Status = true,
-                Message = "verification successful",
-                Data = data
+                BvnData = bvnData
             };
 
-            if (expected == verify)
-            {
-                //
-            }
+            var exp =  expected.GetType();
+            var ver = verify.GetType();
 
-
+          
             // Assert
-            Assert.Equal<Response>(expected, verify);
+            Assert.Equal(expected, verify);
         }
     }
 }
