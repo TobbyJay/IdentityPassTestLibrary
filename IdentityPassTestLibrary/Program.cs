@@ -17,6 +17,7 @@ namespace IdentityPassTestLibrary
             //setup DI
             var serviceProvider = new ServiceCollection()
                 .AddScoped<IBvnVerficationTypes, BvnVerficationTypes>()
+                .AddScoped<IRequestClientSetup, RequestClientSetUp>()
                 .BuildServiceProvider();
 
 

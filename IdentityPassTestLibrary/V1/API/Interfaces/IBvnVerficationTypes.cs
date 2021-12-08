@@ -8,7 +8,7 @@ namespace IdentityPassTestLibrary.V1.API.Interfaces
     {
         public Task<VerificationLevelOne> VerfifyBvnInfoLevel1(string number,string secretKey, bool environmentType);
         public Task<VerificationLevelTwo> VerfifyBvnInfoLevel2(string number, string secretKey, bool environmentType);
-        public Task<VerificationLevelTwoWFace> VerfifyBvnInfoWithFace(string number, string secretKey, bool environmentType);
+        public Task<VerificationLevelTwoWFace> VerfifyBvnInfoWithFace(string number, string image, string secretKey, bool environmentType);
 
     }
 }
