@@ -17,12 +17,16 @@ namespace IdentityPassTestLibrary
             //setup DI
             var serviceProvider = new ServiceCollection()
                 .AddScoped<IBvnVerficationTypes, BvnVerficationTypes>()
+                .AddScoped<INinVerificationTypes, NinVerificationTypes>()
                 .AddScoped<IRequestClientSetup, RequestClientSetUp>()
                 .BuildServiceProvider();
 
 
             var verify = serviceProvider.GetService<IBvnVerficationTypes>();
-            Console.WriteLine(verify.VerfifyBvnInfoLevel1("54651333604", "test_231qza7t1kxejz21eg26e5:m1YlNf4sqfSQ0GEKnC8j2oZ-dyc", false));
+            var nin = serviceProvider.GetService<INinVerificationTypes>();
+
+            //Console.WriteLine(verify.VerfifyBvnInfoLevel1("54651333604", "test_231qza7t1kxejz21eg26e5:m1YlNf4sqfSQ0GEKnC8j2oZ-dyc", false));
+            Console.WriteLine(nin.LookUpNin("12345678909", "test_231qza7t1kxejz21eg26e5:m1YlNf4sqfSQ0GEKnC8j2oZ-dyc", false));
 
            
         }

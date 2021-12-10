@@ -24,7 +24,7 @@ namespace Tests
             var verify = _bvnVerficationTypes.VerfifyBvnInfoLevel1(number, secretKey, environmentType).Result;
           
             // Assert
-            Assert.Equal("Verification Successful", verify.Detail);
+            Assert.Equal("Verification Successfull", verify.Detail);
         }
     }
 }
