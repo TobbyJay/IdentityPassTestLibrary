@@ -52,7 +52,6 @@ namespace IdentityPassTestLibrary.V1.API.Implementations
         /// <param name="secretKey"></param>
         /// <param name="environmentType"></param>
         /// <returns>  The verification status and details. </returns>
-        /// <exception cref="NotImplementedException"></exception>
         public async Task<VerificationLevelTwo> VerfifyBvnInfoLevel2(string number, string secretKey, bool environmentType)
         {
             var environmentUrl = environmentType == false ? "https://sandbox.myidentitypass.com" : "https://api.myidentitypay.com";
@@ -80,7 +79,6 @@ namespace IdentityPassTestLibrary.V1.API.Implementations
         /// <param name="secretKey"></param>
         /// <param name="environmentType"></param>
         /// <returns> The verification status and details. </returns>
-        /// <exception cref="NotImplementedException"></exception>
         public async Task<VerificationLevelTwoWFace> VerfifyBvnInfoWithFace(string number, string image, string secretKey, bool environmentType)
         {
             var environmentUrl = environmentType == false ? "https://sandbox.myidentitypass.com" : "https://api.myidentitypay.com";
