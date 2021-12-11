@@ -9,10 +9,9 @@ namespace Tests
     public class BvnVerificationUnitTest
     {
         BvnVerficationTypes _bvnVerficationTypes;
-        private IRequestClientSetup requestClientSetup;
         public BvnVerificationUnitTest()
         {
-            _bvnVerficationTypes = new BvnVerficationTypes(requestClientSetup);
+            _bvnVerficationTypes = new BvnVerficationTypes();
         }
 
         [Theory]
