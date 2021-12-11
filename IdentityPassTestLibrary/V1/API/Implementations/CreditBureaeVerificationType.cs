@@ -1,53 +1,47 @@
 ﻿using IdentityPassTestLibrary.V1.API.Interfaces;
-using IdentityPassTestLibrary.V1.Responses.DriversLicense;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using IdentityPassTestLibrary.V1.Responses.CreditBureau;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace IdentityPassTestLibrary.V1.API.Implementations
 {
-    public class DriversLicenseVerificationType : IDriversLicenseVerificationType
+    public class CreditBureaeVerificationType : ICreditBureaeVerificationType
     {
         private readonly JsonSerializerOptions _options;
         private bool disposedValue;
         private HttpClient _httpClient;
-        public DriversLicenseVerificationType()
+        public CreditBureaeVerificationType()
         {
             _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             _httpClient = new HttpClient();
         }
 
         /// <summary>
-        /// This method is used to verify Drivers License
+        /// This method is used to verify Credit bureau info
         /// </summary>
-        /// <param name="dob"></param>
-        /// <param name="number"></param>
+        /// <param name="phoneNumber"></param>
+        /// <param name="firstName"></param>
         /// <param name="secretKey"></param>
         /// <param name="environmentType"></param>
         /// <returns></returns>
-        public async Task<DriverseLicenseResponse> VerfifyDriversLicense(string dob,string number, string secretKey, bool environmentType)
+        public async Task<CreditBuerauResponse> VerfifyCreditBureauInfo(string phoneNumber, string firstName, string secretKey, bool environmentType)
         {
             var environmentUrl = environmentType == false ? "https://sandbox.myidentitypass.com" : "https://api.myidentitypay.com";
 
             var value = new Dictionary<string, string>
             {
-                { "dob", dob },
-                { "number", number}
+                { "phone_number", phoneNumber },
+                { "first_name", firstName}
             };
 
-            var url = $"{environmentUrl}/api/v1/biometrics/merchant/data/verification/credit_bureau";
+            var url = $"{environmentUrl}/api/v1/biometrics/merchant/data/verification/bvn_validation";
 
             var result = await GetHttpClientSetup(url, value, secretKey);
 
-            var verificationDetails = JsonSerializer.Deserialize<DriverseLicenseResponse>(result, _options);
+            var verificationDetails = JsonSerializer.Deserialize<CreditBuerauResponse>(result, _options);
 
 
             return verificationDetails;
         }
-
 
         protected virtual void Dispose(bool disposing)
         {
