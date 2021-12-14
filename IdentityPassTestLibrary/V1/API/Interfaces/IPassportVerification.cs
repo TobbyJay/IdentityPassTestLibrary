@@ -10,6 +10,6 @@ namespace IdentityPassTestLibrary.V1.API.Interfaces
     public interface IPassportVerification
     {
         public Task<PassportVerificationResponse> VerifyInternationalPassport(string number, string first_name, 
-            string last_name, string dob, string secretKey, bool environmentType);
+            string last_name, DateTime dob, string secretKey, bool environmentType);
     }
 }

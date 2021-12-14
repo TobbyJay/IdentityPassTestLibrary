@@ -2,6 +2,7 @@
 using IdentityPassTestLibrary.V1.Responses.Passport;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -20,15 +21,38 @@ namespace IdentityPassTestLibrary.V1.API.Implementations
             _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             _httpClient = new HttpClient();
         }
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<PassportVerificationResponse> VerifyInternationalPassport(string number, string first_name, string last_name, string dob, string secretKey, bool environmentType)
+        /// <summary>
+        /// Allows merchant to verify a Nigerian International passport
+        /// </summary>
+        /// <param name="number"></param>
+        /// <param name="first_name"></param>
+        /// <param name="last_name"></param>
+        /// <param name="dob"></param>
+        /// <param name="secretKey"></param>
+        /// <param name="environmentType"></param>
+        /// <returns></returns>
+        public async Task<PassportVerificationResponse> VerifyInternationalPassport(string number, string first_name, string last_name, DateTime dob, string secretKey, bool environmentType)
         {
-            //TODO: Find date format for the dob parameter
-            throw new NotImplementedException();
+            var _dob = Convert.ToDateTime(dob).ToString("yyyy-MM-dd");
+
+            var environmentUrl = environmentType == false ? "https://sandbox.myidentitypass.com" : "https://api.myidentitypay.com";
+
+            var value = new Dictionary<string, string>
+            {
+                { "number", number},
+                {"first_name", first_name },
+                {"last_name", last_name },
+                {"dob", _dob },
+            };
+
+            var url = $"{environmentUrl}/api/v1/biometrics/merchant/data/verification/national_passport";
+
+            var result = await GetHttpClientSetup(url, value, secretKey);
+
+            var verificationDetails = JsonSerializer.Deserialize<PassportVerificationResponse>(result, _options);
+
+            return verificationDetails;
         }
 
         protected virtual void Dispose(bool disposing)
