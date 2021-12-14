@@ -1,100 +1,76 @@
 ﻿using IdentityPassTestLibrary.V1.API.Interfaces;
-using IdentityPassTestLibrary.V1.Responses;
-using IdentityPassTestLibrary.V1.Responses.Bvn.Bvn1._0;
-using IdentityPassTestLibrary.V1.Responses.Bvn.Bvn2._0;
-using IdentityPassTestLibrary.V1.Responses.Bvn.Bvn2._0_w_face;
+using IdentityPassTestLibrary.V1.Responses.Nin.LookupNin;
+using IdentityPassTestLibrary.V1.Responses.Vin;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace IdentityPassTestLibrary.V1.API.Implementations
 {
-    public class BvnVerficationTypes : IBvnVerficationTypes
+    public class VinVerificationTypes : IVinVerificationTypes, IDisposable
     {
         private readonly JsonSerializerOptions _options;
         private bool disposedValue;
         private HttpClient _httpClient;
-        public BvnVerficationTypes()
+        public VinVerificationTypes()
         {
             _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             _httpClient = new HttpClient();
         }
-
         /// <summary>
-        /// This method is used to verify Bvn, and only used for Bvn1.0
+        /// This method allows you to verify voter's card number
         /// </summary>
         /// <param name="number"></param>
+        /// <param name="last_name"></param>
+        /// <param name="state"></param>
         /// <param name="secretKey"></param>
         /// <param name="environmentType"></param>
-        /// <returns> The verification status and details. </returns>
-        public async Task<VerificationLevelOne> VerfifyBvnInfoLevel1(string number, string secretKey, bool environmentType)
-        {
-           
-            var environmentUrl = environmentType == false ? "https://sandbox.myidentitypass.com" : "https://api.myidentitypay.com";
-
-            var value = new Dictionary<string, string>
-            {
-                { "number", number}
-            };
-
-            var url = $"{environmentUrl}/api/v1/biometrics/merchant/data/verification/bvn_validation";
-
-            var result = await GetHttpClientSetup(url, value, secretKey);
-
-            var verificationDetails = JsonSerializer.Deserialize<VerificationLevelOne>(result, _options);
-
-          
-            return verificationDetails;
-
-        }
-
-        /// <summary>
-        /// This method is used to verify Bvn, only used for Bvn2.0
-        /// </summary>
-        /// <param name="number"></param>
-        /// <param name="secretKey"></param>
-        /// <param name="environmentType"></param>
-        /// <returns>  The verification status and details. </returns>
-        public async Task<VerificationLevelTwo> VerfifyBvnInfoLevel2(string number, string secretKey, bool environmentType)
-        {
-            var environmentUrl = environmentType == false ? "https://sandbox.myidentitypass.com" : "https://api.myidentitypay.com";
-
-            var value = new Dictionary<string, string>
-            {
-                { "number", number}
-            };
-
-            var url = $"{environmentUrl}/api/v1/biometrics/merchant/data/verification/bvn";
-
-            var result = await GetHttpClientSetup(url, value, secretKey);
-
-            var verificationDetails = JsonSerializer.Deserialize<VerificationLevelTwo>(result, _options);
-
-
-            return verificationDetails;
-        }
-
-        /// <summary>
-        /// This method is used to verify Bvn along with a face.
-        /// </summary>
-        /// <param name="number"></param>
-        /// <param name="image"></param>
-        /// <param name="secretKey"></param>
-        /// <param name="environmentType"></param>
-        /// <returns> The verification status and details. </returns>
-        public async Task<VerificationLevelTwoWFace> VerfifyBvnInfoWithFace(string number, string image, string secretKey, bool environmentType)
+        /// <returns></returns>
+        public async Task<LookUpVinResponse> LookUpVin(string number, string last_name, string state, string secretKey, bool environmentType)
         {
             var environmentUrl = environmentType == false ? "https://sandbox.myidentitypass.com" : "https://api.myidentitypay.com";
 
             var value = new Dictionary<string, string>
             {
                 { "number", number},
-                {"image", image}
+                { "last_name", last_name},
+                { "state", state}
             };
 
-            var url = $"{environmentUrl}/api/v1/biometrics/merchant/data/verification/bvn_w_face";
+            var url = $"{environmentUrl}/api/v1/biometrics/merchant/data/verification/voters_card";
 
             var result = await GetHttpClientSetup(url, value, secretKey);
 
-            var verificationDetails = JsonSerializer.Deserialize<VerificationLevelTwoWFace>(result, _options);
+            var verificationDetails = JsonSerializer.Deserialize<LookUpVinResponse>(result, _options);
+
+
+            return verificationDetails;
+        }
+
+        /// <summary>
+        /// This method allows you to verify a voters card ID image
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="secretKey"></param>
+        /// <param name="environmentType"></param>
+        /// <returns></returns>
+        public async Task<LookUpVinResponse> LookUpVinWithIdImage(string image, string secretKey, bool environmentType)
+        {
+            var environmentUrl = environmentType == false ? "https://sandbox.myidentitypass.com" : "https://api.myidentitypay.com";
+
+            var value = new Dictionary<string, string>
+            {
+                { "image", image}
+            };
+
+            var url = $"{environmentUrl}/api/v1/biometrics/merchant/data/verification/voters_card/image";
+
+            var result = await GetHttpClientSetup(url, value, secretKey);
+
+            var verificationDetails = JsonSerializer.Deserialize<LookUpVinResponse>(result, _options);
 
 
             return verificationDetails;
@@ -138,6 +114,5 @@ namespace IdentityPassTestLibrary.V1.API.Implementations
             _httpClient.Dispose();
             return result;
         }
-
     }
 }

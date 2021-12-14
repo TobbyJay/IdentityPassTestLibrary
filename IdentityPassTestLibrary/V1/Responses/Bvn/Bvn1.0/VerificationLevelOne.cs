@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
-namespace IdentityPassTestLibrary.V1.Responses.Bvn
+namespace IdentityPassTestLibrary.V1.Responses.Bvn.Bvn1._0
 {
     public class VerificationLevelOne
     {

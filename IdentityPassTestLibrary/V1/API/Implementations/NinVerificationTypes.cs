@@ -1,59 +1,37 @@
 ﻿using IdentityPassTestLibrary.V1.API.Interfaces;
-using IdentityPassTestLibrary.V1.Responses;
-using IdentityPassTestLibrary.V1.Responses.Bvn.Bvn1._0;
-using IdentityPassTestLibrary.V1.Responses.Bvn.Bvn2._0;
-using IdentityPassTestLibrary.V1.Responses.Bvn.Bvn2._0_w_face;
+using IdentityPassTestLibrary.V1.Responses.Nin.LookupNin;
+using IdentityPassTestLibrary.V1.Responses.Nin.LookupNinSlip;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace IdentityPassTestLibrary.V1.API.Implementations
 {
-    public class BvnVerficationTypes : IBvnVerficationTypes
+    public class NinVerificationTypes : INinVerificationTypes, IDisposable
     {
         private readonly JsonSerializerOptions _options;
         private bool disposedValue;
         private HttpClient _httpClient;
-        public BvnVerficationTypes()
+
+        public NinVerificationTypes()
         {
             _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             _httpClient = new HttpClient();
-        }
 
-        /// <summary>
-        /// This method is used to verify Bvn, and only used for Bvn1.0
-        /// </summary>
-        /// <param name="number"></param>
-        /// <param name="secretKey"></param>
-        /// <param name="environmentType"></param>
-        /// <returns> The verification status and details. </returns>
-        public async Task<VerificationLevelOne> VerfifyBvnInfoLevel1(string number, string secretKey, bool environmentType)
-        {
-           
-            var environmentUrl = environmentType == false ? "https://sandbox.myidentitypass.com" : "https://api.myidentitypay.com";
-
-            var value = new Dictionary<string, string>
-            {
-                { "number", number}
-            };
-
-            var url = $"{environmentUrl}/api/v1/biometrics/merchant/data/verification/bvn_validation";
-
-            var result = await GetHttpClientSetup(url, value, secretKey);
-
-            var verificationDetails = JsonSerializer.Deserialize<VerificationLevelOne>(result, _options);
-
-          
-            return verificationDetails;
 
         }
 
         /// <summary>
-        /// This method is used to verify Bvn, only used for Bvn2.0
+        /// This method is used to verify NIN only
         /// </summary>
         /// <param name="number"></param>
         /// <param name="secretKey"></param>
         /// <param name="environmentType"></param>
-        /// <returns>  The verification status and details. </returns>
-        public async Task<VerificationLevelTwo> VerfifyBvnInfoLevel2(string number, string secretKey, bool environmentType)
+        /// <returns></returns>
+        public async Task<LookUpNinResponse> LookUpNin(string number, string secretKey, bool environmentType)
         {
             var environmentUrl = environmentType == false ? "https://sandbox.myidentitypass.com" : "https://api.myidentitypay.com";
 
@@ -62,44 +40,68 @@ namespace IdentityPassTestLibrary.V1.API.Implementations
                 { "number", number}
             };
 
-            var url = $"{environmentUrl}/api/v1/biometrics/merchant/data/verification/bvn";
+            var url = $"{environmentUrl}/api/v1/biometrics/merchant/data/verification/nin_wo_face";
 
             var result = await GetHttpClientSetup(url, value, secretKey);
 
-            var verificationDetails = JsonSerializer.Deserialize<VerificationLevelTwo>(result, _options);
+            var verificationDetails = JsonSerializer.Deserialize<LookUpNinResponse>(result, _options);
 
 
             return verificationDetails;
         }
 
         /// <summary>
-        /// This method is used to verify Bvn along with a face.
+        /// This method is used to verify NIN with the slip Image
         /// </summary>
-        /// <param name="number"></param>
-        /// <param name="image"></param>
+        /// <param name="slipImage"></param>
         /// <param name="secretKey"></param>
         /// <param name="environmentType"></param>
-        /// <returns> The verification status and details. </returns>
-        public async Task<VerificationLevelTwoWFace> VerfifyBvnInfoWithFace(string number, string image, string secretKey, bool environmentType)
+        /// <returns></returns>
+        public async Task<LookUpNinResponse> LookUpNinSlip(string slipImage, string secretKey, bool environmentType)
         {
             var environmentUrl = environmentType == false ? "https://sandbox.myidentitypass.com" : "https://api.myidentitypay.com";
 
             var value = new Dictionary<string, string>
             {
-                { "number", number},
-                {"image", image}
+                { "image", slipImage}
             };
 
-            var url = $"{environmentUrl}/api/v1/biometrics/merchant/data/verification/bvn_w_face";
+            var url = $"{environmentUrl}/api/v1/biometrics/merchant/data/verification/nin/image";
 
             var result = await GetHttpClientSetup(url, value, secretKey);
 
-            var verificationDetails = JsonSerializer.Deserialize<VerificationLevelTwoWFace>(result, _options);
+            var verificationDetails = JsonSerializer.Deserialize<LookUpNinResponse>(result, _options);
 
 
             return verificationDetails;
         }
 
+        /// <summary>
+        /// This method is used to verify NIN with the face match 
+        /// </summary>
+        /// <param name="faceImage"></param>
+        /// <param name="number"></param>
+        /// <param name="secretKey"></param>
+        /// <param name="environmentType"></param>
+        /// <returns></returns>
+        public async Task<LookUpNinWithFaceResponse> LookUpNinWithFace(string faceImage, string number, string secretKey, bool environmentType)
+        {
+            var environmentUrl = environmentType == false ? "https://sandbox.myidentitypass.com" : "https://api.myidentitypay.com";
+
+            var value = new Dictionary<string, string>
+            {
+                { "image", faceImage },
+                { "number", number }
+            };
+
+            var url = $"{environmentUrl}/api/v1/biometrics/merchant/data/verification/nin";
+
+            var result = await GetHttpClientSetup(url, value, secretKey);
+
+            var verificationDetails = JsonSerializer.Deserialize<LookUpNinWithFaceResponse>(result, _options);
+
+            return verificationDetails;
+        }
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -138,6 +140,5 @@ namespace IdentityPassTestLibrary.V1.API.Implementations
             _httpClient.Dispose();
             return result;
         }
-
     }
 }

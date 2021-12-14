@@ -1,8 +1,7 @@
 ﻿using FuzzySharp;
+using IdentityPassTestLibrary;
 using IdentityPassTestLibrary.V1.API.Implementations;
-using IdentityPassTestLibrary.V1.API.Interfaces;
-using IdentityPassTestLibrary.V1.Responses;
-using System.Threading.Tasks;
+using IdentityPassTestLibrary.V1.Responses.Bvn.Bvn1._0;
 using Xunit;
 
 namespace Tests
@@ -22,29 +21,9 @@ namespace Tests
         {
             // Arrange
             var verify = _bvnVerficationTypes.VerfifyBvnInfoLevel1(number, secretKey, environmentType).Result;
-
-
-            // Act
-            var data = new Data
-            {
-                VerificationType = "bvn"
-            };
-
-            var expected = new Response
-            {
-                Status = true,
-                Message = "verification successful",
-                Data = data
-            };
-
-            if (expected == verify)
-            {
-                //
-            }
-
-
+          
             // Assert
-            Assert.Equal<Response>(expected, verify);
+            Assert.Equal("Verification Successfull", verify.Detail);
         }
     }
 }
