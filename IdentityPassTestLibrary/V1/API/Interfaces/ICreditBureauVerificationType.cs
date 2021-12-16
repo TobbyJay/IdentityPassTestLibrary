@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using IdentityPassTestLibrary.V1.Responses.CreditBureau;
 
 namespace IdentityPassTestLibrary.V1.API.Interfaces
 {
     public interface ICreditBureauVerificationType
     {
-
+        public Task<CreditBuerauResponse> VerfifyCreditBureauInfo(string phoneNumber, string firstName, string secretKey, bool environmentType);
     }
 }

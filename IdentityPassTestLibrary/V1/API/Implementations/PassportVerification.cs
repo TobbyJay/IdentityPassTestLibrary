@@ -47,12 +47,12 @@ namespace IdentityPassTestLibrary.V1.API.Implementations
             }
         }
 
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
+        //public void Dispose()
+        //{
+        //    // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //    Dispose(disposing: true);
+        //    GC.SuppressFinalize(this);
+        //}
 
         private async Task<string> GetHttpClientSetup(string url, Dictionary<string, string> value, string secretKey)
         {

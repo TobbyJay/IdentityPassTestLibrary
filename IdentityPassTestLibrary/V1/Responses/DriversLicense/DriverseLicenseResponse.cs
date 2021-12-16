@@ -13,14 +13,14 @@ namespace IdentityPassTestLibrary.V1.Responses.DriversLicense
         [JsonPropertyName("response_code")]
         public string ResponseCode { get; set; }
 
-        [JsonPropertyName("frsc_data")]
-        public FrscData FrscData { get; set; }
+        [JsonPropertyName("data")]
+        public Data Data { get; set; }
     }
 
-    public class FrscData
+    public class Data
     {
-        [JsonPropertyName("uuid")]
-        public string Uuid { get; set; }
+        [JsonPropertyName("gender")]
+        public string Gender { get; set; }
 
         [JsonPropertyName("licenseNo")]
         public string LicenseNo { get; set; }
@@ -33,9 +33,6 @@ namespace IdentityPassTestLibrary.V1.Responses.DriversLicense
 
         [JsonPropertyName("middleName")]
         public string MiddleName { get; set; }
-
-        [JsonPropertyName("gender")]
-        public string Gender { get; set; }
 
         [JsonPropertyName("issuedDate")]
         public string IssuedDate { get; set; }

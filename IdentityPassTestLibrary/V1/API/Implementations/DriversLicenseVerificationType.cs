@@ -38,7 +38,7 @@ namespace IdentityPassTestLibrary.V1.API.Implementations
                 { "number", number}
             };
 
-            var url = $"{environmentUrl}/api/v1/biometrics/merchant/data/verification/credit_bureau";
+            var url = $"{environmentUrl}/api/v1/biometrics/merchant/data/verification/drivers_license";
 
             var result = await GetHttpClientSetup(url, value, secretKey);
 

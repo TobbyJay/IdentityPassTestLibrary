@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace IdentityPassTestLibrary.V1.API.Implementations
 {
-    public class CreditBureaeVerificationType : ICreditBureaeVerificationType
+    public class CreditBureaeVerificationType : ICreditBureauVerificationType
     {
         private readonly JsonSerializerOptions _options;
         private bool disposedValue;
@@ -33,7 +33,7 @@ namespace IdentityPassTestLibrary.V1.API.Implementations
                 { "first_name", firstName}
             };
 
-            var url = $"{environmentUrl}/api/v1/biometrics/merchant/data/verification/bvn_validation";
+            var url = $"{environmentUrl}/api/v1/biometrics/merchant/data/verification/credit_bureau";
 
             var result = await GetHttpClientSetup(url, value, secretKey);
 
